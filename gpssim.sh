@@ -10,7 +10,10 @@ _usage() {
 DRY_RUN="eval"
 
 ARGS=("$@")
-LAST_ARG="${ARGS[$((${#ARGS[@]} - 1))]}"
+LAST_ARG=""
+if [ ${#ARGS} -gt 0 ]; then
+    LAST_ARG="${ARGS[$((${#ARGS[@]} - 1))]}"
+fi
 
 POSITIONAL_ARGS=()
 while [[ $# -gt 0 ]]; do
