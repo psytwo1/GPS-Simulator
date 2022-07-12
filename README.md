@@ -8,6 +8,7 @@ GPS-Simulator simulates the movement history using idevicelocation from the log 
 The following is required, so please install it.
 * [idevicelocation](https://github.com/JonGabilondoAngulo/idevicelocation)
 * xmlstarlet
+* gdate (for macOS)
 
 
 # Usage

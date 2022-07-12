@@ -59,6 +59,11 @@ if [[ "$1" == "" ]]; then
     exit 1
 fi
 
+DATE_CMD="date"
+if ! $DATE_CMD -d "01/01/01" &> /dev/null ;then
+    DATE_CMD="gdate"
+fi
+
 GPX=$1
 
 POINTS=$(xmlstarlet sel -N g="http://www.topografix.com/GPX/1/1" -t -v "count(/g:gpx/g:trk/g:trkseg/g:trkpt)" -n "$GPX")
@@ -79,7 +84,7 @@ for i in $(seq "$POINTS"); do
 
     if [ "$i" -lt "$POINTS" ]; then
         TIME_NEXT=$(xmlstarlet sel -N g="http://www.topografix.com/GPX/1/1" -t -v "/g:gpx/g:trk/g:trkseg/g:trkpt[$((i + 1))]/g:time" -n "$GPX")
-        WAIT="$(($(date -d "$TIME_NEXT" +%s) - $(date -d "$TIME" +%s)))"
+        WAIT="$(($($DATE_CMD -d "$TIME_NEXT" +%s) - $($DATE_CMD -d "$TIME" +%s)))"
         CMD="$DRY_RUN sleep $WAIT"
         if ! $CMD; then
             exit 1
