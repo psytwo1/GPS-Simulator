@@ -16,6 +16,7 @@ The following is required, so please install it.
 ```shell
 Usage: gpssim.sh [OPTIONS] GPX_FILE
   -u | --udid UDID    Target specific device by its device UDID.
+  -v | --verbose      View simulation verbose
   --dry-run           Don't actually simulate location, just show they.
   -h | --help         Show this message and exit
 ```

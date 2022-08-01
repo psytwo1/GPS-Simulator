@@ -3,11 +3,13 @@
 _usage() {
     echo "Usage: $(basename "$0") [OPTIONS] GPX_FILE" 1>&2
     echo "  -u | --udid UDID    Target specific device by its device UDID."
+    echo "  -v | --verbose      View simulation verbose"
     echo "  --dry-run           Don't actually simulate location, just show they."
     echo "  -h | --help         Show this message and exit"
 }
 
 DRY_RUN="eval"
+VERVOSE=false
 
 ARGS=("$@")
 LAST_ARG=""
@@ -29,6 +31,10 @@ while [[ $# -gt 0 ]]; do
     -u | --udid)
         UDID=$2
         shift
+        shift
+        ;;
+    -v | --verbose)
+        VERVOSE=true
         shift
         ;;
     --)
@@ -60,7 +66,7 @@ if [[ "$1" == "" ]]; then
 fi
 
 DATE_CMD="date"
-if ! $DATE_CMD -d "01/01/01" &> /dev/null ;then
+if ! $DATE_CMD -d "01/01/01" &>/dev/null; then
     DATE_CMD="gdate"
 fi
 
@@ -80,6 +86,10 @@ for i in $(seq "$POINTS"); do
     CMD="$CMD $LAT $LON"
     if ! $CMD; then
         exit 1
+    fi
+
+    if [ $VERVOSE ]; then
+        echo "Simulating GPS: $LAT, $LON"
     fi
 
     if [ "$i" -lt "$POINTS" ]; then
